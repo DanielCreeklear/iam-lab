@@ -1,33 +1,32 @@
-# Ementa e cobertura
+# IAM · turma Michel Mendoza 2026.3
 
-IAM corresponde a Interações Atômicas e Moleculares, BCK0104-15, TPI 3-0-4 e carga horária de 36 horas, conforme a [página de 2025.3 do professor Pieter Westera](http://professor.ufabc.edu.br/~pieter.westera/IAM_2503.html).
+A trilha acompanha a página e o PDF **Interações Atômicas e Moleculares — BCK0104-15 (3-0-4), 2026-3-SA** publicados na [página do professor](https://sites.google.com/site/xxmichelmendoza/intera%C3%A7%C3%B5es-at%C3%B4micas-e-moleculares-bck0104-15?authuser=0). O objetivo da disciplina é discutir fundamentos quânticos para compreender átomos, moléculas e sólidos. A [ementa e o cronograma 2026.3](https://drive.google.com/file/d/1OynQ46aJRfofeDTO9mGY8H-gkvkMALCe/view) e a [lista principal](https://drive.google.com/file/d/1Bd__o5EInNnvlc5IL5g1mz-Rd99IJfCg/view) são as referências desta organização.
 
-A ementa ali publicada abrange a descrição quântica da ligação química, ligação de valência, orbitais moleculares, interações elétricas intermoleculares e seu papel nos líquidos, além de redes cristalinas, bandas eletrônicas e propriedades dos materiais.
+## Da turma à trilha de estudo
 
-O objetivo geral é relacionar a descrição microscópica da matéria e suas interações com propriedades e aplicações. O aplicativo organiza esses eixos em sete laboratórios. Trata-se de uma seleção de modelos de estudo, não de equivalência integral a um curso ou às listas do professor.
+O cronograma começa pela equação de autovalores e a equação de Schrödinger em uma dimensão. Avança para confinamento, probabilidades, superposição e transições, hidrogênio e momento angular; depois trata spin, Stern–Gerlach, Zeeman, acoplamento spin–órbita, átomos multieletrônicos e Pauli. A trilha mantém essa sequência e junta em uma aula temas interligados que aparecem como itens separados na lista.
 
-## Cobertura e limites por eixo
+| Aula do aplicativo | Relação com o curso e a lista |
+|---|---|
+| 1 · Autovalores e Hamiltoniano | Autovalores, Schrödinger e operadores, itens 1–10 |
+| 2 · Probabilidade e confinamento 1D | Normalização, densidade, valores esperados e poço infinito |
+| 3 · Superposição e fótons | Superposição quântica, transições e emissão |
+| 4 · Oscilador harmônico | Poço parabólico e espectro do oscilador |
+| 5 · Caixa 3D | Poço de potencial tridimensional e degenerescência |
+| 6 · Hidrogênio | Orbitais 1s, 2s e 2p, função e probabilidade radial |
+| 7 · Momento angular | Autovalores e projeções orbitais |
+| 8 · Spin e Stern–Gerlach | Spin, separação dos feixes, momento magnético e força |
+| 9 · Zeeman e spin–órbita | Níveis de energia e acoplamento L·S |
+| 10 · Multieletrônicos | Pauli, ocupação eletrônica e notação espectroscópica |
+| 11 · Moléculas | Ligações iônicas, covalentes e dipolares, e extensões de interação |
+| 12 · Sólidos | Passagem dos átomos aos sólidos e bandas ilustrativas |
 
-| Eixo | Modelo disponível | Extensões ainda não implementadas |
-|---|---|---|
-| Fundamentos quânticos | Soluções analíticas do poço 1D, átomo hidrogenoide 1s | Schrödinger numérico, orbitais gerais, spin, Pauli, multieletrônicos |
-| Ligação de valência | Sobreposição de orbitais e Morse | Heitler–London explícito, hibridização e geometria molecular |
-| Orbital molecular | Base mínima de dois 1s e ocupações | Orbitais p, diagramas completos, princípio variacional |
-| Interações elétricas | Dipolos orientados e Lennard-Jones | Indução, médias térmicas e ligação de hidrogênio explícita |
-| Líquidos | Metropolis NVT 2D com 36 partículas | g(r), observáveis com incertezas, dinâmica molecular 3D |
-| Estruturas cristalinas | CS, CCC e CFC | Outras redes de Bravais, difração e rede recíproca |
-| Bandas e materiais | Duas bandas simétricas e ocupação | Kronig–Penney, densidade de estados, dopagem e transporte |
+A lista segue essencial: o estudante deve montar os desenhos e fazer os cálculos no papel. As questões da interface são autorais e verificam um conceito por aula; não reproduzem provas ou substituem a derivação algébrica.
 
-O [plano de Michel Mendoza de 2022.2](https://ccnh.ufabc.edu.br/arquivos/CENTRAL/4.Ensino/5.Planos-ensino/QS_2022-2/Plano-Ensino-IAM-2022-2-Michel-Mendoza.pdf) também detalha Zeeman, spin–órbita, átomos multieletrônicos e espectros rotacionais/vibracionais. Esses tópicos não estão implementados nesta versão. Isso evidencia a importância de ajustar futuras extensões ao plano da turma atual.
+Hartree aparece no cronograma dentro do estudo multieletrônico. A aula explica a ideia de campo médio, mas não executa Hartree autoconsistente. O preenchimento H–Ar ilustra Aufbau e Hund; não calcula todos os termos espectroscópicos LS. A ordem das provas e datas do PDF pertencem à oferta 2026.3 consultada, e não são transformadas em lembretes na aplicação.
 
-## Bibliografia para aprofundar
+## Uso pedagógico das simulações
 
-A página de Westera indica Tipler e Llewellyn, **Física Moderna**, capítulos 6, 7, 9 e 10, entre suas referências básicas. Use o livro e as listas da turma para cálculos e demonstrações; os experimentos ajudam a formular e testar intuições.
+Antes de alterar parâmetros, escreva uma previsão; isso dá à exploração uma pergunta orientadora. Depois, explique o resultado em palavras e resolva o item relacionado da lista. O glossário permite conferir matemática e unidades dentro da aula.
 
-## Roteiro de estudo sugerido
-
-1. Escolha o tema da aula atual e leia as hipóteses do modelo.
-2. Escreva uma previsão nas anotações antes de mover um parâmetro.
-3. Faça a alteração e compare o resultado com sua previsão.
-4. Resolva um exercício da lista e confira apenas o comportamento qualitativo no aplicativo.
-5. Marque o tema como revisado quando conseguir explicar o gráfico e os limites do modelo.
+Orbitais 3D são nuvens estáticas de pontos amostrados proporcionalmente a |ψ|²; as cores indicam sinal da função, não carga. Pontos não representam trajetórias. Amostras são truncadas a um volume finito e uma fatia espacial de espessura explícita. O hidrogênio é não relativístico e monoeletrônico. Modelos de Morse, Lennard–Jones e bandas são demonstrações aproximadas, não soluções quantitativas de substâncias específicas.

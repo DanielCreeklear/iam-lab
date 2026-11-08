@@ -1,68 +1,56 @@
 # IAM Lab
 
-Laboratório desktop em **Rust + egui/eframe**, em português, para estudar **Interações Atômicas e Moleculares (BCK0104-15) da UFABC**.
-
-Sete laboratórios interativos cobrem os grandes eixos da ementa. Cada tela apresenta parâmetros, unidades, modelo, uma pergunta para exploração e suas limitações. Revisões e anotações são salvas localmente pelo eframe; parâmetros das simulações reiniciam ao abrir.
+Aplicativo em Rust para acompanhar **Interações Atômicas e Moleculares, BCK0104-15, turma 2026.3 da UFABC**. A trilha segue o cronograma do professor Michel Mendoza e organiza cada aula em: **Entender**, **Explorar**, **Conferir** e **Caderno**. Há exemplos resolvidos, previsão antes da simulação, feedback em cada alternativa e anotações locais.
 
 ## Executar
 
-Instale [Rust estável](https://rustup.rs/). No Windows, instale também as ferramentas C++ do Visual Studio (Desktop development with C++ e Windows SDK).
+Instale Rust estável em <https://rustup.rs/>. No Windows também são necessárias as ferramentas C++ e o Windows SDK do Visual Studio.
 
 ```sh
 cargo run --release
 ```
 
-O primeiro build baixa dependências. Depois, o aplicativo funciona offline. O executável Windows fica em `target/release/iam-lab.exe`. A integração contínua também gera um artefato Windows para download na aba Actions do GitHub.
+Cargo baixa as dependências na primeira compilação; a fonte matemática Noto Sans Math e sua licença já vêm no repositório. O executável Windows fica em `target/release/iam-lab.exe`. O GitHub Actions também gera um build para download na aba Actions.
 
-## Laboratórios
+## Comece a estudar
 
-| Tema | Experimento implementado |
+Abra **Meu percurso** e comece por **O que uma equação de autovalores diz?**. As 12 aulas avançam gradualmente, com um glossário para função, derivada, integral, fase, valor esperado e unidades. Pode abrir outro assunto pelo índice lateral.
+
+| Aula | Experimento |
 |---|---|
-| Fundamentos quânticos | Poço infinito, energia versus confinamento, distribuição radial 1s hidrogenoide |
-| Ligação de valência | Sobreposição 1s–1s e curva fenomenológica de Morse |
-| Orbital molecular | Combinações LCAO ligante/antiligante, nó e ordem de ligação |
-| Interações elétricas | Orientação de dipolos e potencial Lennard-Jones |
-| Líquidos | Monte Carlo Metropolis 2D, temperatura, densidade e energia |
-| Cristais | Redes cúbica simples, CCC e CFC, rotação da projeção e empacotamento |
-| Bandas e materiais | Duas bandas parametrizadas, gap, potencial químico e Fermi-Dirac |
+| Autovalores | Compara ψ e Hψ |
+| Probabilidade | Poço 1D, integral num intervalo, nós e valores esperados |
+| Superposição | Anima a interferência e calcula a energia do fóton |
+| Oscilador | Estados de Hermite, níveis e energia de ponto zero |
+| Caixa 3D | Nuvem rotacionável e degenerescência |
+| Hidrogênio | Orbitais 1s, 2s e 2p, corte e probabilidade radial |
+| Momento angular | Módulo e projeções Lz |
+| Stern–Gerlach | Forças e separação dos feixes |
+| Zeeman | Acoplamento spin–órbita e desdobramento magnético |
+| Átomos multieletrônicos | Diagramas de Pauli e Hund para H–Ar |
+| Moléculas | Orbitais ligantes, ligações, dipolos e líquidos |
+| Sólidos | Redes cristalinas, bandas e Fermi–Dirac |
 
-Esta versão contém um experimento introdutório para cada eixo, não a totalidade de todos os subtópicos possíveis. Consulte [ementa e cobertura](docs/ementa.md) para fontes, lacunas e extensões. Não é software de química computacional quantitativa nem material oficial da UFABC.
+As nuvens 3D mostram amostras estáticas de probabilidade. As cores indicam o sinal de ψ, não a carga; pontos não são trajetórias nem elétrons adicionais. As hipóteses e limites de cada modelo aparecem na aula. O progresso acompanha checagens corretas, mas não comprova domínio do tema.
 
-## Organização do código
+## Estrutura
 
-```text
-src/
-  main.rs              # Inicialização da janela
-  app.rs               # Navegação, progresso e anotações
-  lib.rs               # Biblioteca de física testável sem janela
-  physics/             # Fórmulas e amostragem, sem dependência da interface
-    quantum.rs
-    bonding.rs
-    interactions.rs
-    liquid.rs
-    solid.rs
-  views/               # Controles e gráficos separados por assunto
-tests/physics.rs       # Invariantes e referências analíticas
-docs/                  # Fontes, arquitetura e limites
-```
+`src/app/` organiza navegação e UX; `src/course/` contém lições e feedback; `src/physics/` implementa os modelos sem depender da interface; `src/views/` monta controles; `src/render/` desenha as cenas 3D. `assets/fonts/` contém a fonte matemática e a licença. As anotações antigas são preservadas na migração da v0.1.
 
-Identificadores seguem o padrão Rust em inglês; interface, comentários explicativos e documentação estão em português. As funções físicas recebem unidades explicitadas nos comentários; a interface limita os parâmetros aos domínios válidos.
-
-## Verificar e contribuir
+## Verificação
 
 ```sh
 cargo fmt --all -- --check
 cargo test --locked
 cargo clippy --locked --all-targets -- -D warnings
+cargo build --release --locked
 ```
 
-Antes de adicionar um experimento, escreva o modelo em `physics`, teste uma propriedade física independente e só então conecte uma tela em `views`. Documente unidades, hipóteses e validade. Veja [arquitetura](docs/arquitetura.md).
+## Referências
 
-## Fontes
+- [Site da turma 2026.3 de Michel Mendoza](https://sites.google.com/site/xxmichelmendoza/intera%C3%A7%C3%B5es-at%C3%B4micas-e-moleculares-bck0104-15?authuser=0)
+- [Cronograma e ementa da turma](https://drive.google.com/file/d/1OynQ46aJRfofeDTO9mGY8H-gkvkMALCe/view) · [Lista de exercícios](https://drive.google.com/file/d/1Bd__o5EInNnvlc5IL5g1mz-Rd99IJfCg/view)
+- [Pesquisa PhET sobre desenho de interfaces para simulações](https://phet.colorado.edu/publications/archive/PhET%20Interview%20Paper%20Part%20II.htm)
+- [Noto Sans Math e licença SIL OFL](https://github.com/google/fonts/tree/main/ofl/notosansmath)
 
-- [Plano e ementa do professor Pieter Westera, UFABC, 2025.3](http://professor.ufabc.edu.br/~pieter.westera/IAM_2503.html).
-- [Plano de ensino de Michel Mendoza, UFABC, 2022.2](https://ccnh.ufabc.edu.br/arquivos/CENTRAL/4.Ensino/5.Planos-ensino/QS_2022-2/Plano-Ensino-IAM-2022-2-Michel-Mendoza.pdf).
-- [Catálogo de disciplinas da graduação 2019–2020, p. 657](https://prograd.ufabc.edu.br/pdf/catalogo_disciplinas_graduacao_2019_2020.pdf).
-- [eframe](https://docs.rs/eframe/0.33.0/eframe/) e [egui_plot](https://docs.rs/egui_plot/0.34.0/egui_plot/).
-
-Pesquisa consultada em 08/11/2026. O plano específico da sua turma pode mudar a ordem ou aprofundar outros conteúdos.
+O aplicativo e as checagens são materiais independentes de estudo; não são oficiais da UFABC nem substituem a lista do professor. Consulte [ementa e alinhamento](docs/ementa.md) e [arquitetura e aproximações](docs/arquitetura.md).

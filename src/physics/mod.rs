@@ -1,5 +1,9 @@
 pub mod bonding;
+pub mod confinement;
+pub mod electrons;
 pub mod interactions;
 pub mod liquid;
+pub mod orbitals;
 pub mod quantum;
 pub mod solid;
+pub mod spin;

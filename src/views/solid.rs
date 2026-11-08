@@ -1,12 +1,12 @@
 use super::{curve, graph};
+use crate::render::scene::{Camera, Point};
 use eframe::egui;
-use egui_plot::{Plot, Points};
 use iam_lab::physics::solid::*;
 
 pub struct Solid {
     lattice: Lattice,
     cells: u32,
-    angle: f64,
+    camera: Camera,
     gap: f64,
     hopping: f64,
     temperature: f64,
@@ -17,7 +17,7 @@ impl Default for Solid {
         Self {
             lattice: Lattice::Simple,
             cells: 3,
-            angle: 35.0,
+            camera: Camera::default(),
             gap: 1.1,
             hopping: 0.5,
             temperature: 300.0,
@@ -40,29 +40,27 @@ impl Solid {
                 }
             });
         ui.add(egui::Slider::new(&mut self.cells, 1..=5).text("Células por eixo"));
-        ui.add(egui::Slider::new(&mut self.angle, 0.0..=360.0).text("Rotação (graus)"));
         let (atoms, coordination, packing) = self.lattice.properties();
         ui.label(format!(
             "Átomos/célula: {atoms} · coordenação: {coordination} · empacotamento: {:.2}%",
             packing * 100.0
         ));
-        let a = self.angle.to_radians();
-        let points: Vec<[f64; 2]> = lattice_points(self.lattice, self.cells)
+        let center = self.cells as f64 / 2.0;
+        let points: Vec<_> = lattice_points(self.lattice, self.cells)
             .iter()
-            .map(|p| {
-                let x = p[0] * a.cos() - p[1] * a.sin();
-                let depth = p[0] * a.sin() + p[1] * a.cos();
-                [x, p[2] * 0.866 - depth * 0.5]
+            .map(|p| Point {
+                position: p.map(|v| v - center),
+                positive: true,
             })
             .collect();
-        Plot::new("crystal")
-            .height(370.0)
-            .data_aspect(1.0)
-            .x_axis_label("projeção x/a")
-            .y_axis_label("projeção z/a")
-            .show(ui, |plot| {
-                plot.points(Points::new("Sítios", points).radius(5.0_f32));
-            });
+        self.camera.show(
+            ui,
+            self.lattice.label(),
+            &points,
+            self.cells as f64,
+            "a",
+            Some([self.cells as f64; 3]),
+        );
         ui.label("Experimente: compare a coordenação da cúbica simples e da CFC. Por que CFC ocupa maior fração do volume?");
         ui.small("Projeção ortográfica de células semiabertas, sem repetir átomos das faces externas. Pontos não têm raio físico; o empacotamento usa esferas rígidas em contato. Coordenação refere-se ao cristal infinito.");
     }

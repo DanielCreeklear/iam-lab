@@ -1,30 +1,32 @@
-# Arquitetura e critérios científicos
+# Arquitetura e limites dos modelos
 
-## Separação de responsabilidades
+## Organização do código
 
-`physics` é uma biblioteca de funções puras, exceto o estado explícito do amostrador de líquidos. Não conhece egui, arquivos ou navegação. `views` traduz controles em parâmetros e resultados em gráficos. `app` cuida da escolha do tema e da persistência de notas e progresso. `main` apenas inicia a aplicação.
+`course/` guarda os objetivos, explicações, exemplos resolvidos, perguntas de previsão e feedback dos questionários. O material pedagógico é dado estruturado, separado das janelas. `physics/` contém as funções e os modelos numéricos sem dependência de interface; `views/` liga controles a esses modelos; `render/` desenha nuvens, eixos e cenas 3D; `app/` controla navegação, estado de estudo, notas locais e tema. `main.rs` só configura e inicia a janela.
 
-Evita-se uma hierarquia de traits para sete telas pequenas. O roteamento explícito facilita localizar e alterar cada experimento. Novos modelos devem ter seus próprios arquivos quando crescerem; compartilhe somente utilitários realmente comuns.
+Cada domínio tem um arquivo próprio, como `confinement.rs`, `orbitals.rs`, `spin.rs` e `electrons.rs`. A organização mantém fórmulas, explicação e controles localizáveis sem criar uma camada genérica para cada tela.
 
-## Convenções e domínio
+## Como uma aula ensina
 
-- Poço: elétron, nm e eV, n >= 1, L > 0.
-- Hidrogenoide: r em a0, Z > 0; modelo monoeletrônico não relativístico.
-- LCAO: orbitais 1s normalizados em três dimensões, R > 0; o corte axial não tem integral unitária.
-- Morse: profundidade positiva em eV, distâncias em a0. Ilustração fenomenológica, sem inferir energias a partir da sobreposição.
-- Dipolos: unidades reduzidas do prefator dipolar, ângulos em radianos no núcleo.
-- Líquido: sigma=epsilon=kB=1; 0.15 <= densidade <= 0.85, T* > 0; 36 partículas em 2D. Metropolis sequencial com proposta simétrica, imagem mínima, cutoff 2.5 sigma e potencial deslocado. Caixa sempre maior que duas vezes o cutoff no domínio da interface. Não há relógio físico.
-- Cristais: sítios em unidades do parâmetro de rede a; célula semiaberta e projeção ortográfica. Coordenação e empacotamento referem-se ao cristal infinito.
-- Bandas: eV, ka adimensional, T > 0. Modelo de duas dispersões independentes; não prevê condutividade.
+As 12 aulas seguem a sequência consultada no cronograma da turma: fundamentos e Schrödinger 1D; confinamento, probabilidades e transições; hidrogênio e momento angular; spin, Stern–Gerlach, Zeeman e acoplamento spin–órbita; átomos multieletrônicos; moléculas e sólidos como continuidade. Cada aula separa quatro passos: entender, explorar, conferir e registrar no caderno. Ela explicita pré-requisitos e símbolos, mostra um exemplo resolvido, pede uma previsão antes da simulação e apresenta uma questão curta com feedback por alternativa.
 
-As funções são internas ao uso didático e pressupõem parâmetros válidos, impostos pelos controles. Uma futura API pública deve validar entradas e retornar erros para valores fora do domínio.
+As respostas e o estágio de cada aula ficam no armazenamento local do eframe. Notas da versão 0.1 são migradas para o caderno sem marcar o conteúdo antigo como dominado. A janela não envia dados a serviços remotos. O progresso mostra revisões registradas, não uma medida de domínio.
 
-## Verificação
+## Hipóteses e unidades
 
-Testes verificam normalização e ortogonalidade, escalas de energia, nós e simetrias, mínimos de potencial, orientações de dipolos, limites periódicos e reprodutibilidade do fluido, contagem de sítios e ocupação de Fermi. Não substituem validação experimental ou revisão de especialista.
+- Poço infinito: partícula em 1D; comprimento em nm e energia em eV; n é inteiro positivo.
+- Superposição: combinação de estados estacionários e batimento de densidade; a frequência da transição vem de ΔE/h. O movimento da densidade depende da fase relativa.
+- Oscilador: os estados mostrados são soluções analíticas; os níveis são igualmente espaçados, incluindo energia de ponto zero.
+- Caixa 3D: poço cúbico de paredes infinitas. A energia depende de `nx² + ny² + nz²`, por isso trincas distintas podem compartilhar um nível.
+- Hidrogênio: orbitais monoeletrônicos não relativísticos 1s, 2s e 2p; coordenadas em raios de Bohr. Nuvens amostradas por `|ψ|²` são cortes estáticos num volume finito. As cores mostram o sinal da função, não carga; pontos não são trajetórias.
+- Spin e Zeeman: projeções de spin ±1/2 e fator de Landé no limite de campo fraco. A visualização de Stern–Gerlach desenha a separação de pacotes de onda numa região magnética idealizada.
+- Multieletrônicos: preenchimento didático H–Ar segundo Aufbau, Pauli e Hund. A ocupação não resolve a interação eletrônica nem todos os termos espectroscópicos.
+- Moléculas: Morse, LCAO, dipolos e Lennard–Jones são modelos explicativos. Uma curva qualitativa não prevê, por si só, a energia experimental de uma molécula.
+- Sólidos: cristais são desenhos de células finitas, projetados ortograficamente; coordenação e empacotamento descrevem o cristal infinito. Bandas são dispersões de brinquedo de duas bandas e não predizem a condutividade de um material.
+- Líquido: Lennard–Jones em unidades reduzidas `σ = ε = kB = 1`, 36 partículas em 2D e dinâmica Metropolis com proposta simétrica, imagem mínima e corte `2,5σ`. A densidade e a temperatura não representam segundos nem uma substância específica.
 
-O CI compila em Windows, roda testes, rustfmt e Clippy e publica o executável como artefato da execução. O Cargo.lock deve ser versionado para builds reproduzíveis.
+Os controles limitam os parâmetros aos domínios definidos. As aproximações servem para explorar relações físicas e não substituem uma derivação, a resolução da lista da turma ou a conferência com fontes do curso.
 
-## Persistência
+## Referências e escopo do curso
 
-eframe salva notas, marcas de revisão e tema selecionado no diretório de dados local do usuário para IAM Lab. As simulações reiniciam com parâmetros padrão. Nenhum dado é enviado para serviços remotos pelo aplicativo.
+O mapeamento aula a aula e os tópicos consultados estão em [ementa e alinhamento](ementa.md). A referência da turma é o [site do professor Michel Mendoza](https://sites.google.com/site/xxmichelmendoza/intera%C3%A7%C3%B5es-at%C3%B4micas-e-moleculares-bck0104-15?authuser=0), com o [cronograma 2026.3](https://drive.google.com/file/d/1OynQ46aJRfofeDTO9mGY8H-gkvkMALCe/view). O modelo Zeeman parte do fator de Landé para campo fraco; níveis e correções físicas variam conforme o regime e as aproximações consideradas.
