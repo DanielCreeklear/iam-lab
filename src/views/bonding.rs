@@ -26,7 +26,7 @@ impl Bonding {
         ui.add(egui::Slider::new(&mut self.distance, 0.3..=5.0).text("R (a₀)"));
         ui.add(egui::Slider::new(&mut self.depth, 0.5..=8.0).text("Profundidade D (eV)"));
         ui.add(egui::Slider::new(&mut self.width, 0.5..=2.0).text("a (a₀⁻¹)"));
-        ui.monospace("S(R) = exp(−R)(1+R+R²/3)\nV(R) = D[(1−exp(−a(R−Rₑ)))²−1], Rₑ=1.4 a₀");
+        ui.monospace("S(R) = exp(−R)(1+R+R²/3)\nV(R) = D[(1−exp(−a(R−Re)))²−1], Re=1.4 a₀");
         ui.label(format!(
             "Sobreposição S = {:.4} · V(R) = {:.3} eV",
             overlap(self.distance),
@@ -66,7 +66,7 @@ impl Bonding {
             ui,
             "lcao",
             "x no eixo internuclear (a₀)",
-            "ψ (a₀⁻³ᐟ²)",
+            "ψ (a0^(-3/2))",
             vec![
                 (
                     "Ligante σ",

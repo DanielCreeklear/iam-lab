@@ -51,7 +51,12 @@ impl eframe::App for Lab {
             ui.label("UFABC · BCK0104-15");
             ui.separator();
             for (index,title) in TOPICS.iter().enumerate() {
-                ui.selectable_value(&mut self.study.selected,index,*title);
+                if ui.add_sized(
+                    [ui.available_width(), 24.0],
+                    egui::Button::new(*title).selected(self.study.selected == index),
+                ).clicked() {
+                    self.study.selected = index;
+                }
                 ui.add_space(6.0);
             }
             ui.separator();

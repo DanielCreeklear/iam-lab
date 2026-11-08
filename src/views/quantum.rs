@@ -46,7 +46,7 @@ impl Quantum {
                 .integer()
                 .text("Carga nuclear Z"),
         );
-        ui.monospace("P₁ₛ(r) = 4Z³r² exp(−2Zr) · r em a₀");
+        ui.monospace("P₁s(r) = 4Z³r² exp(−2Zr) · r em a₀");
         ui.label(format!(
             "E₁ = {:.3} eV · raio mais provável = {:.3} a₀",
             hydrogen_energy(1, self.charge),
@@ -58,7 +58,7 @@ impl Quantum {
             "r (a₀)",
             "P(r) (a₀⁻¹)",
             vec![(
-                "P₁ₛ",
+                "P₁s",
                 curve(0.0, 6.0 / self.charge, |r| radial_1s(r, self.charge)),
             )],
         );
