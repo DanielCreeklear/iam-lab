@@ -4,12 +4,6 @@ mod foundations;
 mod matter;
 pub mod progress;
 
-pub const PROFESSOR_URL: &str = "https://sites.google.com/site/xxmichelmendoza/intera%C3%A7%C3%B5es-at%C3%B4micas-e-moleculares-bck0104-15?authuser=0";
-pub const SCHEDULE_URL: &str =
-    "https://drive.google.com/file/d/1OynQ46aJRfofeDTO9mGY8H-gkvkMALCe/view";
-pub const PROBLEMS_URL: &str =
-    "https://drive.google.com/file/d/1Bd__o5EInNnvlc5IL5g1mz-Rd99IJfCg/view";
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Experiment {
     Eigenstates,
@@ -48,7 +42,7 @@ pub struct Lesson {
     pub actions: [&'static str; 3],
     pub takeaway: &'static str,
     pub misconception: &'static str,
-    pub source_section: &'static str,
+    pub paper_practice: &'static str,
     pub experiment: Experiment,
     pub quiz: Quiz,
 }

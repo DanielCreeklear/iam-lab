@@ -1,43 +1,52 @@
 # IAM Lab
 
-Aplicativo em Rust para acompanhar **Interações Atômicas e Moleculares, BCK0104-15, turma 2026.3 da UFABC**. A trilha segue o cronograma do professor Michel Mendoza e organiza cada aula em: **Entender**, **Explorar**, **Conferir** e **Caderno**. Há exemplos resolvidos, previsão antes da simulação, feedback em cada alternativa e anotações locais.
+Aplicativo desktop em Rust para entender **Interações Atômicas e Moleculares**. A matéria começa por funções de onda e energia, avança por átomos e ligações e termina em modelos simples de sólidos.
+
+## Estudar no aplicativo
+
+Cada tema é apresentado em quatro passos curtos:
+
+1. **Entender:** leia uma ideia por vez e abra a fórmula só depois da explicação.
+2. **Prever e testar:** escreva o que espera ver, manipule a simulação e compare.
+3. **Lembrar:** responda sem consultar e leia uma dica específica para a sua resposta.
+4. **Explicar:** resolva uma prática no papel e anote o que entendeu.
+
+Depois de uma resposta correta, o aplicativo traz a pergunta de volta após intervalos crescentes. As anotações, as previsões e o progresso ficam neste computador.
+
+## Percurso
+
+| Etapa | Tema | O que observar |
+|---|---|---|
+| Fundamentos | Autovalores e energia | Por que algumas ondas têm energia definida |
+| Fundamentos | Probabilidade | Como a área de `|ψ|²` vira chance |
+| Fundamentos | Superposição | Como duas ondas interferem e mudam no tempo |
+| Estados ligados | Oscilador harmônico | Por que o estado de menor energia não é zero |
+| Estados ligados | Caixa tridimensional | Como estados diferentes podem ter a mesma energia |
+| Átomos | Orbitais de hidrogênio | Como forma, nós e probabilidade se relacionam |
+| Momento angular e spin | Momento angular orbital | Como módulo e projeção diferem |
+| Momento angular e spin | Stern–Gerlach | Como um gradiente magnético separa um feixe |
+| Momento angular e spin | Efeito Zeeman | Como spin–órbita e campo magnético separam níveis |
+| Muitos elétrons | Pauli, Hund e campo médio | Como ocupações e repulsão mudam o átomo |
+| Moléculas e sólidos | Ligações moleculares | Como fase e ocupação afetam uma ligação |
+| Moléculas e sólidos | Redes e bandas | Como muitos átomos formam bandas de energia |
+
+As cenas tridimensionais mostram amostras estáticas de probabilidade. A cor das nuvens representa o sinal da função de onda; cada ponto não é uma trajetória nem um elétron adicional. As aproximações aparecem junto da simulação e em [limites dos modelos](docs/arquitetura.md).
 
 ## Executar
 
-Instale Rust estável em <https://rustup.rs/>. No Windows também são necessárias as ferramentas C++ e o Windows SDK do Visual Studio.
+Instale Rust estável em <https://rustup.rs/>. No Windows, instale também as ferramentas C++ e o Windows SDK do Visual Studio.
 
 ```sh
-cargo run --release
+cargo run --release --locked
 ```
 
-Cargo baixa as dependências na primeira compilação; a fonte matemática Noto Sans Math e sua licença já vêm no repositório. O executável Windows fica em `target/release/iam-lab.exe`. O GitHub Actions também gera um build para download na aba Actions.
+Na primeira compilação, Cargo baixa as dependências. A fonte matemática Noto Sans Math e sua licença estão incluídas no repositório. O executável fica em `target/release/iam-lab.exe`; o GitHub Actions publica uma cópia na aba Actions.
 
-## Comece a estudar
+## Código
 
-Abra **Meu percurso** e comece por **O que uma equação de autovalores diz?**. As 12 aulas avançam gradualmente, com um glossário para função, derivada, integral, fase, valor esperado e unidades. Pode abrir outro assunto pelo índice lateral.
+`src/course/` organiza explicações e práticas; `src/physics/` mantém os modelos sem dependência de interface; `src/views/` liga controles às simulações; `src/render/` desenha as cenas 3D; `src/app/` cuida da navegação e do estudo local. Consulte [a trilha conceitual](docs/trilha.md), [as escolhas pedagógicas e suas fontes](docs/aprendizagem.md) e [a arquitetura científica](docs/arquitetura.md).
 
-| Aula | Experimento |
-|---|---|
-| Autovalores | Compara ψ e Hψ |
-| Probabilidade | Poço 1D, integral num intervalo, nós e valores esperados |
-| Superposição | Anima a interferência e calcula a energia do fóton |
-| Oscilador | Estados de Hermite, níveis e energia de ponto zero |
-| Caixa 3D | Nuvem rotacionável e degenerescência |
-| Hidrogênio | Orbitais 1s, 2s e 2p, corte e probabilidade radial |
-| Momento angular | Módulo e projeções Lz |
-| Stern–Gerlach | Forças e separação dos feixes |
-| Zeeman | Acoplamento spin–órbita e desdobramento magnético |
-| Átomos multieletrônicos | Diagramas de Pauli e Hund para H–Ar |
-| Moléculas | Orbitais ligantes, ligações, dipolos e líquidos |
-| Sólidos | Redes cristalinas, bandas e Fermi–Dirac |
-
-As nuvens 3D mostram amostras estáticas de probabilidade. As cores indicam o sinal de ψ, não a carga; pontos não são trajetórias nem elétrons adicionais. As hipóteses e limites de cada modelo aparecem na aula. O progresso acompanha checagens corretas, mas não comprova domínio do tema.
-
-## Estrutura
-
-`src/app/` organiza navegação e UX; `src/course/` contém lições e feedback; `src/physics/` implementa os modelos sem depender da interface; `src/views/` monta controles; `src/render/` desenha as cenas 3D. `assets/fonts/` contém a fonte matemática e a licença. As anotações antigas são preservadas na migração da v0.1.
-
-## Verificação
+## Compilação
 
 ```sh
 cargo fmt --all -- --check
@@ -45,12 +54,3 @@ cargo test --locked
 cargo clippy --locked --all-targets -- -D warnings
 cargo build --release --locked
 ```
-
-## Referências
-
-- [Site da turma 2026.3 de Michel Mendoza](https://sites.google.com/site/xxmichelmendoza/intera%C3%A7%C3%B5es-at%C3%B4micas-e-moleculares-bck0104-15?authuser=0)
-- [Cronograma e ementa da turma](https://drive.google.com/file/d/1OynQ46aJRfofeDTO9mGY8H-gkvkMALCe/view) · [Lista de exercícios](https://drive.google.com/file/d/1Bd__o5EInNnvlc5IL5g1mz-Rd99IJfCg/view)
-- [Pesquisa PhET sobre desenho de interfaces para simulações](https://phet.colorado.edu/publications/archive/PhET%20Interview%20Paper%20Part%20II.htm)
-- [Noto Sans Math e licença SIL OFL](https://github.com/google/fonts/tree/main/ofl/notosansmath)
-
-O aplicativo e as checagens são materiais independentes de estudo; não são oficiais da UFABC nem substituem a lista do professor. Consulte [ementa e alinhamento](docs/ementa.md) e [arquitetura e aproximações](docs/arquitetura.md).

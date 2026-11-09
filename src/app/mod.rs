@@ -44,6 +44,12 @@ impl Lab {
         self.selected = Some(index);
         self.study.last_lesson = self.catalog[index].id.into();
         self.study.stage = 0;
+        self.study.entry(self.catalog[index].id).concept_step = 0;
+    }
+    fn start_review(&mut self, index: usize) {
+        self.open(index);
+        self.study.stage = 2;
+        self.study.entry(self.catalog[index].id).start_review();
     }
     fn completed(&self) -> usize {
         self.catalog
@@ -63,21 +69,19 @@ impl Lab {
         egui::SidePanel::left("course-navigation")
             .exact_width(270.0)
             .resizable(false)
+            .frame(egui::Frame::new().fill(theme::RAIL))
             .show(ctx, |ui| {
-                ui.add_space(12.0);
+                ui.add_space(14.0);
                 ui.label(
                     egui::RichText::new("IAM / LAB")
                         .size(25.0)
                         .strong()
-                        .color(theme::NAVY),
+                        .color(theme::INK),
                 );
-                ui.label("Michel Mendoza · UFABC 2026.3");
-                ui.add_space(16.0);
+                ui.label("Quântica, átomos e matéria");
+                ui.add_space(12.0);
                 if ui
-                    .add_sized(
-                        [ui.available_width(), 36.0],
-                        egui::Button::new("Meu percurso").selected(self.selected.is_none()),
-                    )
+                    .selectable_label(self.selected.is_none(), "Visão geral")
                     .clicked()
                 {
                     self.selected = None;
@@ -85,7 +89,7 @@ impl Lab {
                 ui.add_space(8.0);
                 ui.add(
                     egui::TextEdit::singleline(&mut self.search)
-                        .hint_text("Buscar um assunto...")
+                        .hint_text("Localizar um tema…")
                         .desired_width(f32::INFINITY),
                 );
                 ui.add_space(10.0);
@@ -113,18 +117,21 @@ impl Lab {
                                 );
                                 block = item.block;
                             }
-                            let status = if self.study.passed(item.id) {
-                                "✓"
-                            } else {
-                                ""
-                            };
-                            let label = format!("{:02}  {}  {}", index + 1, item.title, status);
+                            let status = self.study.passed(item.id);
+                            let label = format!(
+                                "{:02}  {}{}",
+                                index + 1,
+                                item.title,
+                                if status { "   ✓" } else { "" }
+                            );
+                            let selected = self.selected == Some(index);
                             if ui
                                 .add_sized(
-                                    [ui.available_width(), 44.0],
+                                    [ui.available_width(), 42.0],
                                     egui::Button::new(label)
                                         .wrap()
-                                        .selected(self.selected == Some(index)),
+                                        .selected(selected)
+                                        .frame(selected),
                                 )
                                 .clicked()
                             {
@@ -135,7 +142,7 @@ impl Lab {
                     });
                 ui.separator();
                 ui.label(format!(
-                    "{} / {} checagens concluídas",
+                    "{} de {} conceitos lembrados",
                     self.completed(),
                     self.catalog.len()
                 ));
@@ -143,8 +150,7 @@ impl Lab {
                     egui::ProgressBar::new(self.completed() as f32 / self.catalog.len() as f32)
                         .fill(theme::TEAL),
                 );
-                ui.small("Progresso indica prática, não domínio garantido.");
-                ui.hyperlink_to("Abrir site do professor", course::PROFESSOR_URL);
+                ui.small("O número acompanha respostas corretas; rever ajuda a manter o conteúdo.");
             });
     }
 }
@@ -161,13 +167,20 @@ impl eframe::App for Lab {
             egui::ScrollArea::vertical()
                 .id_salt(("main", self.selected, self.study.stage))
                 .show(ui, |ui| {
-                    ui.set_max_width(1100.0);
-                    ui.add_space(14.0);
-                    match self.selected {
-                        Some(index) => self.lesson(ui, index),
-                        None => self.home(ui),
-                    }
-                    ui.add_space(24.0);
+                    let available = ui.available_width();
+                    let content_width = available.min(1080.0);
+                    ui.horizontal(|ui| {
+                        ui.add_space(((available - content_width) * 0.5).max(0.0));
+                        ui.vertical(|ui| {
+                            ui.set_width(content_width);
+                            ui.add_space(20.0);
+                            match self.selected {
+                                Some(index) => self.lesson(ui, index),
+                                None => self.home(ui),
+                            }
+                            ui.add_space(28.0);
+                        });
+                    });
                 });
         });
     }

@@ -107,16 +107,16 @@ fn aufbau_hund_conserve_electrons_and_pauli() {
 #[test]
 fn quiz_requires_answer_and_feedback_tracks_retries() {
     let mut progress = LessonProgress::default();
-    progress.check(1);
+    progress.check(1, 100);
     assert_eq!(progress.attempts, 0);
     assert!(!progress.passed);
     progress.select(0);
-    progress.check(1);
+    progress.check(1, 100);
     assert!(progress.checked);
     assert!(!progress.passed);
     progress.select(1);
     assert!(!progress.checked);
-    progress.check(1);
+    progress.check(1, 100);
     assert!(progress.passed);
     assert_eq!(progress.attempts, 2);
 }
@@ -140,6 +140,6 @@ fn curriculum_has_unique_keys_and_valid_quizzes() {
         assert!(ids.insert(lesson.id));
         assert!(lesson.quiz.correct < 3);
         assert!(lesson.quiz.feedback.iter().all(|s| !s.is_empty()));
-        assert!(!lesson.source_section.is_empty());
+        assert!(!lesson.paper_practice.is_empty());
     }
 }

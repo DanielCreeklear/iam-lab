@@ -1,32 +1,33 @@
 # Arquitetura e limites dos modelos
 
-## Organização do código
+## Partes do aplicativo
 
-`course/` guarda os objetivos, explicações, exemplos resolvidos, perguntas de previsão e feedback dos questionários. O material pedagógico é dado estruturado, separado das janelas. `physics/` contém as funções e os modelos numéricos sem dependência de interface; `views/` liga controles a esses modelos; `render/` desenha nuvens, eixos e cenas 3D; `app/` controla navegação, estado de estudo, notas locais e tema. `main.rs` só configura e inicia a janela.
+- `course/` contém as explicações, perguntas, exemplos resolvidos e práticas curtas. Não depende da interface.
+- `physics/` contém os cálculos e as amostras numéricas. Não depende da interface nem do armazenamento.
+- `views/` transforma controles em parâmetros e resultados em gráficos.
+- `render/` desenha eixos, nuvens e cenas 3D rotacionáveis.
+- `app/` organiza navegação, etapas, anotações e revisões salvas localmente.
+- `main.rs` configura e inicia a janela.
 
-Cada domínio tem um arquivo próprio, como `confinement.rs`, `orbitals.rs`, `spin.rs` e `electrons.rs`. A organização mantém fórmulas, explicação e controles localizáveis sem criar uma camada genérica para cada tela.
+Cada modelo fica no próprio arquivo para facilitar a leitura e a manutenção. As cenas 3D usam uma projeção ortográfica e um pintor leve, sem motor de jogo.
 
-## Como uma aula ensina
+## Hipóteses dos experimentos
 
-As 12 aulas seguem a sequência consultada no cronograma da turma: fundamentos e Schrödinger 1D; confinamento, probabilidades e transições; hidrogênio e momento angular; spin, Stern–Gerlach, Zeeman e acoplamento spin–órbita; átomos multieletrônicos; moléculas e sólidos como continuidade. Cada aula separa quatro passos: entender, explorar, conferir e registrar no caderno. Ela explicita pré-requisitos e símbolos, mostra um exemplo resolvido, pede uma previsão antes da simulação e apresenta uma questão curta com feedback por alternativa.
+- **Poço 1D:** partícula entre paredes infinitas; comprimento em nm e energia em eV.
+- **Superposição:** combina estados estacionários. A fase relativa muda a distribuição espacial; as probabilidades de energia do sistema isolado permanecem constantes. A tela calcula energia de fóton, não a taxa de emissão.
+- **Oscilador:** estados analíticos de uma parábola; níveis separados por `ℏω`, com energia fundamental `ℏω/2`.
+- **Caixa 3D:** paredes infinitas. A energia depende de `nx² + ny² + nz²`, permitindo estados diferentes com a mesma energia.
+- **Hidrogênio:** estados 1s, 2s e 2p do modelo monoeletrônico não relativístico. A nuvem é amostrada de `|ψ|²`, limitada a um volume finito. A cor mostra o sinal da onda, não a carga.
+- **Momento angular:** autovalores e projeções orbitais. As setas comparam valores possíveis; não são vetores clássicos medidos em todas as direções.
+- **Stern–Gerlach:** feixe ideal de átomos neutros e campo com gradiente. A simulação ignora estrutura hiperfina e outros detalhes pequenos.
+- **Zeeman e spin–órbita:** fator de Landé no regime de campo fraco. O controle usa um acoplamento ajustável e não calcula a estrutura fina completa do hidrogênio.
+- **Muitos elétrons:** preenchimento didático de H a Ar conforme Aufbau, Pauli e Hund. O campo médio é explicado, mas o aplicativo não resolve Hartree autoconsistente nem todos os termos espectroscópicos.
+- **Moléculas:** sobreposição de orbitais, ordem de ligação e interações moleculares são modelos qualitativos; não predizem por si sós energias experimentais.
+- **Sólidos:** cristais são células finitas desenhadas em projeção ortográfica; bandas são dispersões ilustrativas de duas bandas. O aplicativo não calcula condutividade.
+- **Líquido:** Lennard–Jones em unidades reduzidas `σ = ε = kB = 1`, com 36 partículas em 2D, imagem mínima e corte `2,5σ`. O tempo de simulação não corresponde a segundos físicos.
 
-As respostas e o estágio de cada aula ficam no armazenamento local do eframe. Notas da versão 0.1 são migradas para o caderno sem marcar o conteúdo antigo como dominado. A janela não envia dados a serviços remotos. O progresso mostra revisões registradas, não uma medida de domínio.
+Os controles limitam os parâmetros aos intervalos que os modelos aceitam. Use cada visualização para testar uma relação física e faça a derivação e as contas também no papel.
 
-## Hipóteses e unidades
+## Dados e privacidade
 
-- Poço infinito: partícula em 1D; comprimento em nm e energia em eV; n é inteiro positivo.
-- Superposição: combinação de estados estacionários e batimento de densidade; a frequência da transição vem de ΔE/h. O movimento da densidade depende da fase relativa.
-- Oscilador: os estados mostrados são soluções analíticas; os níveis são igualmente espaçados, incluindo energia de ponto zero.
-- Caixa 3D: poço cúbico de paredes infinitas. A energia depende de `nx² + ny² + nz²`, por isso trincas distintas podem compartilhar um nível.
-- Hidrogênio: orbitais monoeletrônicos não relativísticos 1s, 2s e 2p; coordenadas em raios de Bohr. Nuvens amostradas por `|ψ|²` são cortes estáticos num volume finito. As cores mostram o sinal da função, não carga; pontos não são trajetórias.
-- Spin e Zeeman: projeções de spin ±1/2 e fator de Landé no limite de campo fraco. A visualização de Stern–Gerlach desenha a separação de pacotes de onda numa região magnética idealizada.
-- Multieletrônicos: preenchimento didático H–Ar segundo Aufbau, Pauli e Hund. A ocupação não resolve a interação eletrônica nem todos os termos espectroscópicos.
-- Moléculas: Morse, LCAO, dipolos e Lennard–Jones são modelos explicativos. Uma curva qualitativa não prevê, por si só, a energia experimental de uma molécula.
-- Sólidos: cristais são desenhos de células finitas, projetados ortograficamente; coordenação e empacotamento descrevem o cristal infinito. Bandas são dispersões de brinquedo de duas bandas e não predizem a condutividade de um material.
-- Líquido: Lennard–Jones em unidades reduzidas `σ = ε = kB = 1`, 36 partículas em 2D e dinâmica Metropolis com proposta simétrica, imagem mínima e corte `2,5σ`. A densidade e a temperatura não representam segundos nem uma substância específica.
-
-Os controles limitam os parâmetros aos domínios definidos. As aproximações servem para explorar relações físicas e não substituem uma derivação, a resolução da lista da turma ou a conferência com fontes do curso.
-
-## Referências e escopo do curso
-
-O mapeamento aula a aula e os tópicos consultados estão em [ementa e alinhamento](ementa.md). A referência da turma é o [site do professor Michel Mendoza](https://sites.google.com/site/xxmichelmendoza/intera%C3%A7%C3%B5es-at%C3%B4micas-e-moleculares-bck0104-15?authuser=0), com o [cronograma 2026.3](https://drive.google.com/file/d/1OynQ46aJRfofeDTO9mGY8H-gkvkMALCe/view). O modelo Zeeman parte do fator de Landé para campo fraco; níveis e correções físicas variam conforme o regime e as aproximações consideradas.
+Previsões, respostas, etapas de revisão e anotações ficam no armazenamento local do eframe. Os dados anteriores de anotações são preservados ao abrir a versão nova; a migração não marca os conceitos como aprendidos. O aplicativo não envia dados para serviços remotos.

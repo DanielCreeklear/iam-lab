@@ -1,7 +1,9 @@
 use eframe::egui::{self, Color32, RichText};
-pub const NAVY: Color32 = Color32::from_rgb(24, 48, 76);
-pub const TEAL: Color32 = Color32::from_rgb(0, 126, 132);
-pub const MUTED: Color32 = Color32::from_rgb(83, 103, 122);
+pub const INK: Color32 = Color32::from_rgb(34, 43, 45);
+pub const TEAL: Color32 = Color32::from_rgb(22, 104, 98);
+pub const MUTED: Color32 = Color32::from_rgb(83, 93, 90);
+pub const PAPER: Color32 = Color32::from_rgb(250, 249, 245);
+pub const RAIL: Color32 = Color32::from_rgb(241, 240, 234);
 
 pub fn apply(ctx: &egui::Context) {
     let mut fonts = egui::FontDefinitions::default();
@@ -34,33 +36,24 @@ pub fn apply(ctx: &egui::Context) {
     style
         .text_styles
         .insert(egui::TextStyle::Small, egui::FontId::proportional(13.0));
-    style.spacing.item_spacing = egui::vec2(10.0, 9.0);
+    style.spacing.item_spacing = egui::vec2(10.0, 7.0);
     style.spacing.button_padding = egui::vec2(12.0, 8.0);
-    style.visuals.panel_fill = Color32::from_rgb(247, 249, 252);
-    style.visuals.override_text_color = Some(NAVY);
-    style.visuals.selection.bg_fill = Color32::from_rgb(210, 235, 239);
+    style.visuals.panel_fill = PAPER;
+    style.visuals.window_fill = PAPER;
+    style.visuals.override_text_color = Some(INK);
+    style.visuals.selection.bg_fill = Color32::from_rgb(220, 234, 228);
     style.visuals.selection.stroke = egui::Stroke::new(1.0_f32, TEAL);
+    style.visuals.widgets.inactive.bg_fill = Color32::TRANSPARENT;
+    style.visuals.widgets.noninteractive.bg_fill = PAPER;
     ctx.set_style(style);
 }
-pub fn card(ui: &mut egui::Ui, body: impl FnOnce(&mut egui::Ui)) {
-    egui::Frame::new()
-        .fill(Color32::WHITE)
-        .stroke(egui::Stroke::new(1.0_f32, Color32::from_rgb(222, 230, 238)))
-        .corner_radius(12)
-        .inner_margin(18)
-        .show(ui, |ui| {
-            ui.set_width(ui.available_width());
-            body(ui);
-        });
-}
 pub fn callout(ui: &mut egui::Ui, title: &str, text: &str) {
-    egui::Frame::new()
-        .fill(Color32::from_rgb(229, 242, 244))
-        .corner_radius(10)
-        .inner_margin(16)
-        .show(ui, |ui| {
-            ui.set_width(ui.available_width());
-            ui.label(RichText::new(title).strong().color(TEAL));
-            ui.label(text);
-        });
+    ui.label(RichText::new(title).strong().color(TEAL));
+    ui.label(text);
+}
+
+pub fn section_title(ui: &mut egui::Ui, title: &str) {
+    ui.add_space(15.0);
+    ui.label(RichText::new(title).strong().color(INK));
+    ui.separator();
 }
